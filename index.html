@@ -1,0 +1,979 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IPO-Flex｜香港上市顾问</title>
+<meta name="description" content="IPO-Flex 为企业提供香港上市全流程顾问服务：上市评估、重组架构、中介统筹、招股书与上市后合规。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0b1b33;
+    --navy-2: #10264a;
+    --navy-3: #173563;
+    --gold: #c9a45c;
+    --gold-ink: #8a6a2f;        /* gold for text on light backgrounds (AA) */
+    --champagne: #e8d9b5;
+    --ivory: #f7f4ee;
+    --paper: #ffffff;
+    --ink: #14181f;
+    --muted: #5a6272;
+    --on-navy: #f3efe6;
+    --on-navy-muted: #b8c0cf;
+    --hairline: rgba(201,164,92,.25);
+    --hairline-light: #e6e0d4;
+    --error: #b3261e;
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --shadow: 0 1px 2px rgba(11,27,51,.06), 0 12px 32px rgba(11,27,51,.10);
+    --serif: "Playfair Display", "Noto Serif SC", "Songti SC", serif;
+    --sans: "Inter", "Noto Sans SC", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --gutter: 16px;
+    --max: 1160px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body {
+    margin: 0; background: var(--ivory); color: var(--ink);
+    font-family: var(--sans); line-height: 1.65; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: inherit; }
+  svg { display: block; max-width: 100%; }
+  .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+  .skip { position: absolute; left: -999px; top: 8px; z-index: 50; background: var(--gold); color: var(--navy); padding: 8px 14px; border-radius: 8px; }
+  .skip:focus { left: 8px; }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 600 12px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--gold-ink); }
+  .eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+  .dark .eyebrow { color: var(--gold); }
+  .h2 { margin: 14px 0 12px; font: 600 clamp(26px, 5vw, 42px)/1.25 var(--serif); letter-spacing: -.005em; }
+  .lead { margin: 0; color: var(--muted); font-size: 15px; max-width: 640px; }
+  .dark { background: var(--navy); color: var(--on-navy); }
+  .dark .lead { color: var(--on-navy-muted); }
+  section { padding: 72px 0; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 26px;
+    border-radius: 999px; font: 600 14px/1 var(--sans); text-decoration: none; cursor: pointer; border: 1px solid transparent;
+    transition: transform .2s, box-shadow .2s, background .2s, color .2s;
+  }
+  .btn-gold { background: linear-gradient(135deg, #d9b872, var(--gold) 55%, #b48c45); color: var(--navy); box-shadow: 0 8px 24px rgba(201,164,92,.28); }
+  .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(201,164,92,.38); }
+  .btn-ghost { border-color: rgba(232,217,181,.45); color: var(--on-navy); background: transparent; }
+  .btn-ghost:hover { background: rgba(232,217,181,.08); border-color: var(--champagne); }
+
+  /* Header */
+  .header { position: sticky; top: 0; z-index: 20; background: rgba(11,27,51,.86); backdrop-filter: blur(14px); border-bottom: 1px solid var(--hairline); color: var(--on-navy); }
+  .header .wrap { display: flex; align-items: center; gap: 12px; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-right: auto; }
+  .logo-text { font: 600 19px/1 var(--serif); letter-spacing: .02em; }
+  .logo-text b { color: var(--gold); font-weight: 600; }
+  .nav { display: none; }
+  .nav a { text-decoration: none; font-size: 14px; color: var(--on-navy-muted); transition: color .2s; }
+  .nav a:hover { color: var(--on-navy); }
+  .lang {
+    display: inline-flex; border: 1px solid var(--hairline); border-radius: 999px; padding: 3px; gap: 2px;
+  }
+  .lang button { min-width: 40px; min-height: 36px; border: 0; border-radius: 999px; background: transparent; color: var(--on-navy-muted); font: 600 12px/1 var(--sans); cursor: pointer; }
+  .lang button[aria-pressed="true"] { background: var(--gold); color: var(--navy); }
+  .header .btn { display: none; min-height: 40px; padding: 0 18px; font-size: 13px; }
+  .icon-btn { width: 44px; height: 44px; display: grid; place-items: center; border: 0; background: none; border-radius: 50%; cursor: pointer; color: var(--on-navy); }
+  .icon-btn:hover { background: rgba(255,255,255,.06); }
+  .nav.open {
+    display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0;
+    background: var(--navy); border-bottom: 1px solid var(--hairline); padding: 8px var(--gutter) 20px;
+  }
+  .nav.open a { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 15px; }
+
+  /* Hero */
+  .hero { background: var(--navy); color: var(--on-navy); padding: 12px 0 0; }
+  .hero-card {
+    position: relative; overflow: hidden; border-radius: var(--radius-lg); padding: 56px 22px 0; text-align: center;
+    background:
+      radial-gradient(90% 60% at 50% 0%, rgba(201,164,92,.18), transparent 60%),
+      linear-gradient(180deg, var(--navy-2) 0%, var(--navy) 100%);
+    border: 1px solid var(--hairline);
+  }
+  .hero-card::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background-image: linear-gradient(rgba(201,164,92,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(201,164,92,.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(70% 60% at 50% 30%, #000, transparent 75%);
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 30%, #000, transparent 75%);
+  }
+  .hero-inner { position: relative; }
+  .hero h1 { margin: 18px auto 0; max-width: 820px; font: 600 clamp(32px, 7.4vw, 66px)/1.18 var(--serif); letter-spacing: -.01em; }
+  .gold-text { background: linear-gradient(90deg, #f1dca8, var(--gold) 50%, #b48c45); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { margin: 18px auto 0; max-width: 560px; color: var(--on-navy-muted); font-size: 15px; }
+  .cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 28px; }
+  /* Spotlight (port of ibelick/spotlight): blurred glow that follows the pointer inside the hero card */
+  .hero-spot {
+    position: absolute; left: 0; top: 0; z-index: 1; width: 340px; height: 340px; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle at center, rgba(243,239,230,.34), rgba(232,217,181,.16) 42%, transparent 72%);
+    filter: blur(24px); opacity: 0; transition: opacity .2s;
+  }
+  .hero-spot.on { opacity: 1; }
+  .hero-inner { z-index: 2; }
+  .hero-grid { display: grid; align-items: center; }
+  .hero-3d { position: relative; height: 360px; margin: 12px -22px 0; }
+  .hero-3d canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; opacity: 0; transition: opacity .8s ease; }
+  .hero-3d.ready canvas { opacity: 1; }
+  .spline-loader { position: absolute; inset: 0; display: grid; place-items: center; }
+  .hero-3d.ready .spline-loader, .hero-3d.failed .spline-loader { display: none; }
+  .loader { width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(232,217,181,.18); border-top-color: var(--gold); animation: spin 1s linear infinite; }
+  .routes { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 10px; padding: 26px 0 34px; border-top: 1px solid var(--hairline); margin: 0 -22px; }
+  .routes span { padding: 8px 14px; border: 1px solid var(--hairline); border-radius: 999px; font-size: 12px; color: var(--champagne); letter-spacing: .04em; }
+
+  /* Roadmap */
+  .steps { list-style: none; margin: 40px 0 0; padding: 0; position: relative; display: grid; gap: 0; counter-reset: s; }
+  .steps::before { content: ""; position: absolute; left: 21px; top: 22px; bottom: 22px; border-left: 1.5px dashed var(--gold); opacity: .6; }
+  .step { position: relative; display: grid; grid-template-columns: 44px 1fr; gap: 16px; padding: 0 0 28px; }
+  .step .num {
+    position: relative; z-index: 1; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--paper); border: 1px solid var(--gold); color: var(--gold-ink); font: 600 15px/1 var(--serif);
+    transition: background .25s, color .25s;
+  }
+  .step:hover .num { background: var(--navy); color: var(--gold); }
+  .step h3 { margin: 8px 0 4px; font: 600 17px/1.4 var(--serif); }
+  .step p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  /* Requirements */
+  .req-bg { margin-top: 36px; border-radius: var(--radius-lg); padding: 28px 12px; background: radial-gradient(120% 90% at 50% 0%, var(--navy-3), var(--navy-2) 55%, var(--navy) 100%); border: 1px solid var(--hairline); }
+  .req-card { max-width: 860px; margin: 0 auto; background: var(--paper); color: var(--ink); border-radius: 22px; box-shadow: 0 30px 60px rgba(0,0,0,.35); overflow: hidden; }
+  .tabs { display: flex; gap: 4px; padding: 10px; border-bottom: 1px solid var(--hairline-light); overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: 1 0 auto; min-height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: transparent; cursor: pointer;
+    font: 600 13px/1 var(--sans); color: var(--muted); white-space: nowrap; transition: background .2s, color .2s;
+  }
+  .tab:hover { background: var(--ivory); color: var(--ink); }
+  .tab[aria-selected="true"] { background: var(--navy); color: var(--champagne); }
+  .panel { padding: 22px 20px 24px; }
+  .panel-intro { margin: 0 0 18px; font-size: 14px; color: var(--muted); }
+  .tests { display: grid; gap: 12px; }
+  .test { border: 1px solid var(--hairline-light); border-radius: 14px; padding: 16px 18px; background: linear-gradient(180deg, #fff, #fbf9f4); }
+  .test h4 { margin: 0 0 10px; font: 600 15px/1.4 var(--serif); color: var(--navy); }
+  .test dl { margin: 0; display: grid; gap: 8px; }
+  .test .row { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; border-top: 1px dashed var(--hairline-light); padding-top: 8px; }
+  .test .row:first-child { border-top: 0; padding-top: 0; }
+  .test dt { color: var(--muted); }
+  .test dd { margin: 0; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .note { margin: 18px 0 0; font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: flex-start; }
+  .note svg { flex: none; margin-top: 2px; color: var(--gold-ink); }
+
+  /* Services */
+  .svc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 36px; }
+  .svc {
+    position: relative; display: flex; flex-direction: column; gap: 10px; padding: 24px 22px; min-height: 200px;
+    background: var(--paper); border: 1px solid var(--hairline-light); border-radius: var(--radius-md);
+    transition: transform .25s, box-shadow .25s, border-color .25s;
+  }
+  .svc:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--gold); }
+  .svc .ico { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--navy); color: var(--gold); }
+  .svc h3 { margin: 8px 0 0; font: 600 17px/1.4 var(--serif); }
+  .svc p { margin: 0; color: var(--muted); font-size: 14px; }
+  .svc .idx { position: absolute; top: 20px; right: 22px; font: 500 italic 14px/1 var(--serif); color: var(--gold-ink); }
+
+  /* Director */
+  .director { text-align: center; overflow: hidden; }
+  .wave { width: 100%; height: 130px; margin-bottom: 8px; }
+  .wave path { fill: none; stroke: var(--gold); stroke-width: 1.3; }
+  .quote-mark { font: 500 72px/0.6 var(--serif); color: var(--gold); display: block; margin-top: 24px; }
+  .director blockquote { margin: 12px auto 0; max-width: 820px; font: 500 clamp(19px, 3.8vw, 30px)/1.6 var(--serif); }
+  .dir-grid { display: grid; gap: 40px; justify-items: center; }
+  .portrait { position: relative; width: min(300px, 76vw); margin: 12px 0 0; }
+  .portrait::before { content: ""; position: absolute; inset: -12px 12px 12px -12px; border: 1px solid var(--gold); border-radius: 28px; opacity: .7; }
+  .portrait::after { content: ""; position: absolute; inset: 0; border-radius: 24px; background: linear-gradient(180deg, transparent 60%, rgba(11,27,51,.45)); pointer-events: none; }
+  .portrait img { position: relative; display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 24px; border: 1px solid var(--hairline); box-shadow: 0 30px 60px rgba(0,0,0,.4); }
+  .sig { display: inline-flex; align-items: center; gap: 14px; margin-top: 30px; text-align: left; }
+  .sig::before { content: ""; width: 32px; height: 1px; background: var(--gold); }
+  .sig strong { display: block; font: 600 15px/1.3 var(--sans); letter-spacing: .06em; }
+  .sig span { font-size: 13px; color: var(--on-navy-muted); }
+  .why { margin: 56px auto 0; max-width: 680px; border-top: 1px solid var(--hairline); padding-top: 36px; }
+  .why-slides { position: relative; min-height: 120px; }
+  .why-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .5s; }
+  .why-slide.active { opacity: 1; }
+  .why-slide h3 { margin: 0 0 8px; font: 600 20px/1.4 var(--serif); color: var(--champagne); }
+  .why-slide p { margin: 0; color: var(--on-navy-muted); font-size: 15px; }
+  .dots { display: flex; justify-content: center; gap: 4px; margin-top: 18px; }
+  .dots button { position: relative; width: 28px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; }
+  .dots button::before { content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; border-radius: 999px; transform: translate(-50%, -50%); background: rgba(232,217,181,.3); transition: width .25s, background .25s; }
+  .dots button[aria-current="true"]::before { width: 24px; background: var(--gold); }
+
+  /* Confidentiality */
+  .conf { text-align: center; background: linear-gradient(180deg, var(--ivory), #efe9dd); }
+  .conf .lead { margin: 0 auto; }
+  .orbit { position: relative; width: min(340px, 86vw); aspect-ratio: 1; margin: 40px auto 0; }
+  .orbit .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(138,106,47,.22); }
+  .orbit .spin { position: absolute; inset: 0; animation: spin 40s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .orbit .sat {
+    position: absolute; width: 46px; height: 46px; margin: -23px 0 0 -23px; display: grid; place-items: center; border-radius: 50%;
+    background: var(--paper); border: 1px solid var(--hairline-light); color: var(--navy); box-shadow: var(--shadow);
+    animation: spin 40s linear infinite reverse;
+  }
+  .orbit .core { position: absolute; inset: 36%; display: grid; place-items: center; border-radius: 22px; background: var(--navy); color: var(--gold); box-shadow: 0 20px 40px rgba(11,27,51,.3); }
+  .pillars { display: grid; gap: 14px; margin: 40px auto 0; max-width: 900px; text-align: left; }
+  /* GlowCard (port of components/ui/spotlight-card.tsx), tuned to a gold hue for the light section.
+     --x/--y/--xp/--yp are set on .pillars from the document pointer position. */
+  .glow-card {
+    --base: 38; --spread: 26; --radius: 20; --border: 2; --size: 220; --outer: 1;
+    --saturation: 72; --lightness: 52; --bg-spot-opacity: .14; --border-spot-opacity: 1; --border-light-opacity: .5;
+    --backdrop: rgba(255,255,255,.72); --backup-border: rgba(138,106,47,.16);
+    --border-size: calc(var(--border) * 1px);
+    --spotlight-size: calc(var(--size) * 1px);
+    --hue: calc(var(--base) + (var(--xp, 0) * var(--spread)));
+    position: relative; display: grid; grid-template-rows: 1fr auto; gap: 18px; min-height: 230px; padding: 24px 22px;
+    border-radius: calc(var(--radius) * 1px); border: var(--border-size) solid var(--backup-border);
+    background-color: var(--backdrop);
+    background-image: radial-gradient(var(--spotlight-size) var(--spotlight-size) at calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+      hsl(var(--hue) calc(var(--saturation) * 1%) calc(var(--lightness) * 1%) / var(--bg-spot-opacity)), transparent);
+    background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+    background-position: 50% 50%; background-attachment: fixed;
+    box-shadow: 0 1rem 2rem -1.2rem rgba(11,27,51,.35);
+    backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+  }
+  .glow-card::before, .glow-card::after, .glow-outer::before, .glow-outer::after {
+    pointer-events: none; content: ""; position: absolute; inset: calc(var(--border-size) * -1);
+    border: var(--border-size) solid transparent; border-radius: calc(var(--radius) * 1px);
+    background-attachment: fixed; background-repeat: no-repeat; background-position: 50% 50%;
+    background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+    -webkit-mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+    -webkit-mask-clip: padding-box, border-box; -webkit-mask-composite: source-in;
+    mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+    mask-clip: padding-box, border-box; mask-composite: intersect;
+  }
+  .glow-card::before, .glow-outer::before {
+    background-image: radial-gradient(calc(var(--spotlight-size) * .75) calc(var(--spotlight-size) * .75) at calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+      hsl(var(--hue) calc(var(--saturation) * 1%) calc(var(--lightness) * 1%) / var(--border-spot-opacity)), transparent 100%);
+    filter: brightness(1.5);
+  }
+  .glow-card::after, .glow-outer::after {
+    background-image: radial-gradient(calc(var(--spotlight-size) * .5) calc(var(--spotlight-size) * .5) at calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+      hsl(0 100% 100% / var(--border-light-opacity)), transparent 100%);
+  }
+  .glow-outer {
+    position: absolute; inset: 0; pointer-events: none; will-change: filter; opacity: var(--outer);
+    border-radius: calc(var(--radius) * 1px); filter: blur(calc(var(--border-size) * 10));
+  }
+  .glow-outer::before { inset: -10px; border-width: 10px; }
+  .glow-card .gc-ico { position: relative; width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: var(--navy); color: var(--gold); }
+  .glow-card .gc-idx { position: absolute; top: 22px; right: 22px; font: 500 italic 14px/1 var(--serif); color: var(--gold-ink); }
+  .glow-card h3 { position: relative; margin: 0 0 6px; font: 600 17px/1.4 var(--serif); }
+  .glow-card p { position: relative; margin: 0; font-size: 14px; color: var(--muted); }
+
+  /* FAQ */
+  .faq { background: var(--paper); }
+  .faq-list { margin-top: 32px; border-top: 1px solid var(--hairline-light); }
+  details { border-bottom: 1px solid var(--hairline-light); }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0; cursor: pointer; font: 600 16px/1.5 var(--serif); color: var(--navy); }
+  summary::-webkit-details-marker { display: none; }
+  summary .plus { flex: none; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--hairline-light); display: grid; place-items: center; color: var(--gold-ink); transition: transform .25s, background .25s; }
+  summary:hover .plus { background: var(--ivory); }
+  details[open] summary .plus { transform: rotate(45deg); }
+  details p { margin: 0 0 22px; color: var(--muted); font-size: 14px; max-width: 780px; }
+
+  /* Contact */
+  .contact-grid { display: grid; gap: 40px; }
+  .contact-info { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 14px; font-size: 14px; color: var(--on-navy-muted); }
+  .contact-info li { display: flex; gap: 12px; align-items: flex-start; }
+  .contact-info svg { color: var(--gold); flex: none; margin-top: 2px; }
+  .contact-info a { color: var(--on-navy); text-decoration: none; border-bottom: 1px solid var(--hairline); transition: border-color .2s; }
+  .contact-info a:hover { border-color: var(--gold); }
+  .contact-info strong { display: block; color: var(--champagne); font-weight: 500; }
+  form { background: var(--navy-2); border: 1px solid var(--hairline); border-radius: var(--radius-lg); padding: 26px 20px; display: grid; gap: 16px; }
+  .field { display: grid; gap: 6px; }
+  .field label { font-size: 13px; color: var(--champagne); font-weight: 500; }
+  .field input, .field select, .field textarea {
+    width: 100%; min-height: 48px; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(232,217,181,.22);
+    background: rgba(11,27,51,.6); color: var(--on-navy); font: 400 15px/1.4 var(--sans); transition: border-color .2s, box-shadow .2s;
+  }
+  .field textarea { min-height: 110px; resize: vertical; }
+  .field select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--gold) 50%), linear-gradient(135deg, var(--gold) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
+  .field select option { color: var(--ink); }
+  .field input::placeholder, .field textarea::placeholder { color: #8b95a8; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,164,92,.2); }
+  .field[data-invalid] input, .field[data-invalid] select { border-color: #f2b8b5; }
+  .err { display: none; font-size: 12px; color: #f2b8b5; }
+  .field[data-invalid] .err { display: block; }
+  .form-2 { display: grid; gap: 16px; }
+  .consent { font-size: 12px; color: var(--on-navy-muted); margin: 0; }
+  .success { display: none; text-align: center; padding: 28px 8px; }
+  .success.show { display: block; }
+  .success .tick { width: 56px; height: 56px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; background: var(--gold); color: var(--navy); }
+  .success h3 { margin: 0 0 6px; font: 600 20px/1.4 var(--serif); color: var(--champagne); }
+  .success p { margin: 0; color: var(--on-navy-muted); font-size: 14px; }
+
+  /* Footer */
+  footer { background: #08142a; color: var(--on-navy-muted); padding: 40px 0 32px; border-top: 1px solid var(--hairline); font-size: 13px; }
+  .foot-top { display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: center; justify-content: space-between; }
+  .foot-links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  .foot-links a { text-decoration: none; }
+  .foot-links a:hover { color: var(--on-navy); }
+  .disclaimer { margin: 26px 0 0; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.06); font-size: 12px; line-height: 1.7; }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (min-width: 600px) {
+    .svc-grid { grid-template-columns: 1fr 1fr; }
+    .form-2 { grid-template-columns: 1fr 1fr; }
+    .tests { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  }
+  @media (min-width: 960px) {
+    :root { --gutter: 32px; }
+    section { padding: 112px 0; }
+    .nav { display: flex; gap: 26px; margin-right: 12px; }
+    .header .btn { display: inline-flex; }
+    #menuBtn { display: none; }
+    .hero-card { padding: 40px 48px 0; text-align: left; }
+    .hero-grid { grid-template-columns: 1fr 1.05fr; min-height: 560px; }
+    .hero h1, .hero p { margin-left: 0; }
+    .cta-row { justify-content: flex-start; }
+    .hero-3d { height: 600px; margin: 0 -48px 0 0; }
+    .routes { margin: 0 -48px; }
+    .svc-grid { grid-template-columns: repeat(4, 1fr); }
+    .steps { grid-template-columns: repeat(7, 1fr); gap: 18px; }
+    .steps::before { left: 22px; right: 22px; top: 22px; bottom: auto; border-left: 0; border-top: 1.5px dashed var(--gold); }
+    .step { grid-template-columns: 1fr; gap: 6px; padding: 0; }
+    .req-bg { padding: 48px 32px; }
+    .panel { padding: 28px 32px 30px; }
+    .pillars { grid-template-columns: repeat(3, 1fr); }
+    .dir-grid { grid-template-columns: 340px 1fr; align-items: center; gap: 80px; max-width: 1040px; margin: 0 auto; }
+    .portrait { width: 100%; }
+    .dir-text { text-align: left; }
+    .dir-text blockquote { margin-left: 0; }
+    .contact-grid { grid-template-columns: 1fr 1.15fr; align-items: start; gap: 64px; }
+    form { padding: 34px 32px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">跳至主要内容</a>
+
+<header class="header">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="IPO-Flex">
+      <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="1" y="1" width="38" height="38" rx="10" fill="none" stroke="#c9a45c" stroke-width="1.4"/>
+        <path d="M11 28V12M17 28V18M23 28V15M29 28V10" stroke="#c9a45c" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M10 22l7-5 6 2 7-8" fill="none" stroke="#e8d9b5" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-text">IPO<b>-</b>Flex</span>
+    </a>
+    <nav class="nav" id="nav" aria-label="主导航">
+      <a href="#process" data-i18n="nav.process">上市流程</a>
+      <a href="#requirements" data-i18n="nav.req">上市要求</a>
+      <a href="#services" data-i18n="nav.services">核心服务</a>
+      <a href="#director" data-i18n="nav.director">董事寄语</a>
+      <a href="#faq" data-i18n="nav.faq">常见问题</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language / 语言">
+      <button type="button" data-lang="zh" aria-pressed="true">中</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn btn-gold" href="#contact" data-i18n="cta.book">预约咨询</a>
+    <button class="icon-btn" id="menuBtn" aria-label="菜单" aria-expanded="false" aria-controls="nav">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <!-- Hero -->
+  <div class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-card">
+        <div class="hero-spot" id="heroSpot" aria-hidden="true"></div>
+        <div class="hero-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <span class="eyebrow" data-i18n="hero.eyebrow">香港上市顾问</span>
+              <h1><span data-i18n="hero.t1">助您稳健登陆</span><br><span class="gold-text" data-i18n="hero.t2">资本市场</span></h1>
+              <p data-i18n="hero.sub">从上市可行性评估到挂牌后的持续合规，IPO-Flex 以一站式顾问服务，陪伴企业走好上市路上的每一步。</p>
+              <div class="cta-row">
+                <a class="btn btn-gold" href="#contact" data-i18n="cta.book">预约咨询</a>
+                <a class="btn btn-ghost" href="#process" data-i18n="cta.process">了解上市流程</a>
+              </div>
+            </div>
+            <!-- SplineScene (port of components/ui/splite.tsx): loader shown until the scene is ready -->
+            <div class="hero-3d" id="hero3d" aria-hidden="true">
+              <div class="spline-loader"><span class="loader"></span></div>
+              <canvas id="splineCanvas"></canvas>
+            </div>
+          </div>
+          <div class="routes">
+            <span data-i18n="route.main">主板 Main Board</span>
+            <span data-i18n="route.gem">GEM 创业板</span>
+            <span data-i18n="route.18a">18A 生物科技</span>
+            <span data-i18n="route.18c">18C 特专科技</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roadmap -->
+  <section id="process">
+    <div class="wrap reveal">
+      <span class="eyebrow" data-i18n="process.eyebrow">IPO Roadmap</span>
+      <h2 class="h2" data-i18n="process.title">清晰的上市路线图</h2>
+      <p class="lead" data-i18n="process.lead">香港上市涉及多方中介与严格的监管审阅。我们把复杂的流程拆解为七个阶段，让管理层随时掌握进度与下一步行动。</p>
+      <ol class="steps" id="steps"></ol>
+    </div>
+  </section>
+
+  <!-- Requirements -->
+  <section id="requirements" class="dark">
+    <div class="wrap reveal">
+      <span class="eyebrow" data-i18n="req.eyebrow">Eligibility</span>
+      <h2 class="h2" data-i18n="req.title">上市要求一览</h2>
+      <p class="lead" data-i18n="req.lead">不同上市板块与章节对财务表现、市值和业务性质有不同要求。选择适合的上市路径，是成功上市的第一步。</p>
+      <div class="req-bg">
+        <div class="req-card">
+          <div class="tabs" role="tablist" id="tabs" aria-label="上市板块"></div>
+          <div class="panel" role="tabpanel" id="panel" tabindex="0"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="wrap reveal">
+      <span class="eyebrow" data-i18n="svc.eyebrow">Our Services</span>
+      <h2 class="h2" data-i18n="svc.title">一站式上市顾问服务</h2>
+      <p class="lead" data-i18n="svc.lead">我们与保荐人、律师、审计师紧密协作，为您统筹上市全过程，让管理层专注于业务增长。</p>
+      <div class="svc-grid" id="svcGrid"></div>
+    </div>
+  </section>
+
+  <!-- Director -->
+  <section id="director" class="dark director">
+    <svg class="wave" viewBox="0 0 1200 130" preserveAspectRatio="none" aria-hidden="true">
+      <path id="w1"/><path id="w2" style="opacity:.45"/><path id="w3" style="opacity:.22"/>
+    </svg>
+    <div class="wrap reveal">
+      <div class="dir-grid">
+        <figure class="portrait">
+          <img src="dr-gary-chan.jpg" width="444" height="592" alt="DR. GARY CHAN" loading="lazy" decoding="async">
+        </figure>
+        <div class="dir-text">
+          <span class="eyebrow" data-i18n="dir.eyebrow">A Word from Our Director</span>
+          <span class="quote-mark" aria-hidden="true">“</span>
+          <blockquote data-i18n="dir.quote">上市不是终点，而是企业迈向更高治理水平与更广阔资本舞台的起点。我们希望成为客户最值得信赖的同行者。</blockquote>
+          <div class="sig">
+            <div><strong>DR. GARY CHAN</strong><span>Flextcg董事</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="why" aria-roledescription="carousel" aria-label="为何选择 IPO-Flex">
+        <span class="eyebrow" data-i18n="why.eyebrow">为何选择 IPO-Flex</span>
+        <div class="why-slides" id="whySlides" aria-live="polite" style="margin-top:20px"></div>
+        <div class="dots" id="whyDots" role="group" aria-label="切换"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Confidentiality -->
+  <section id="confidentiality" class="conf">
+    <div class="wrap reveal">
+      <span class="eyebrow" data-i18n="conf.eyebrow">Confidentiality</span>
+      <h2 class="h2" style="max-width:780px;margin-left:auto;margin-right:auto" data-i18n="conf.title">严格保密，是我们合作的第一原则</h2>
+      <p class="lead" data-i18n="conf.lead">上市筹备涉及大量未公开的财务与商业信息。我们在首次深入沟通前即签署保密协议，并以最小权限原则管理所有项目资料。</p>
+      <div class="orbit" aria-hidden="true">
+        <span class="ring" style="inset:0"></span>
+        <span class="ring" style="inset:15%"></span>
+        <span class="ring" style="inset:30%"></span>
+        <div class="spin">
+          <span class="sat" style="left:50%;top:0%"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>
+          <span class="sat" style="left:93.3%;top:75%"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <span class="sat" style="left:6.7%;top:75%"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4-4 4 3 3-2 7 5"/><path d="M7 16l3 2 4-3"/></svg></span>
+        </div>
+        <div class="core"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor"/></svg></div>
+      </div>
+      <div class="pillars" id="glowCards">
+        <article class="glow-card">
+          <div class="glow-outer" aria-hidden="true"></div>
+          <span class="gc-idx" aria-hidden="true">01</span>
+          <span class="gc-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><rect x="9" y="13" width="6" height="5" rx="1"/><path d="M10 13v-1.5a2 2 0 0 1 4 0V13"/></svg></span>
+          <div><h3 data-i18n="conf.p1t">保密协议先行</h3><p data-i18n="conf.p1">在获取任何敏感资料前签署 NDA，明确信息使用范围与期限。</p></div>
+        </article>
+        <article class="glow-card">
+          <div class="glow-outer" aria-hidden="true"></div>
+          <span class="gc-idx" aria-hidden="true">02</span>
+          <span class="gc-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 18.4A2 2 0 0 0 2 19.8V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.2a2 2 0 0 0 1.4-.6l.8-.8a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".6" fill="currentColor"/></svg></span>
+          <div><h3 data-i18n="conf.p2t">最小权限访问</h3><p data-i18n="conf.p2">项目资料仅限核心团队成员按需访问，并保留完整的访问记录。</p></div>
+        </article>
+        <article class="glow-card">
+          <div class="glow-outer" aria-hidden="true"></div>
+          <span class="gc-idx" aria-hidden="true">03</span>
+          <span class="gc-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>
+          <div><h3 data-i18n="conf.p3t">利益冲突审查</h3><p data-i18n="conf.p3">承接项目前进行利益冲突检查，确保顾问意见独立、客观。</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <div class="wrap reveal">
+      <span class="eyebrow" data-i18n="faq.eyebrow">FAQ</span>
+      <h2 class="h2" data-i18n="faq.title">常见问题</h2>
+      <p class="lead" data-i18n="faq.lead">以下是企业在筹备香港上市时最常提出的问题。</p>
+      <div class="faq-list" id="faqList"></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="dark">
+    <div class="wrap contact-grid reveal">
+      <div>
+        <span class="eyebrow" data-i18n="contact.eyebrow">Contact</span>
+        <h2 class="h2" data-i18n="contact.title">开启您的上市之路</h2>
+        <p class="lead" data-i18n="contact.lead">留下您的联系方式与基本情况，我们的顾问将在两个工作日内与您联系，安排一次免费的初步评估会议。</p>
+        <ul class="contact-info">
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span><strong data-i18n="contact.emailL">电邮</strong><a href="mailto:info@ktxhk.com">info@ktxhk.com</a></span></li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-4A8.5 8.5 0 1 1 8.4 19z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .8a4.6 4.6 0 0 1-2.7-2.7l.8-1-1-2z"/></svg><span><strong>WhatsApp</strong><a href="https://wa.me/85293411855" target="_blank" rel="noopener">+852 9341 1855</a></span></li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><strong data-i18n="contact.hk">香港总部</strong><span data-i18n="contact.hkAddr">香港灣仔軒尼詩道225號1樓</span></span></li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><strong data-i18n="contact.zh">中国珠海总部</strong><span data-i18n="contact.zhAddr">廣東省珠海市吉大东洲花园A座4樓</span></span></li>
+        </ul>
+      </div>
+      <div>
+        <!-- No backend yet: replace the submit handler with a POST to Formspree or your own endpoint -->
+        <form id="form" novalidate>
+          <div class="form-2">
+            <div class="field"><label for="f-name" data-i18n="f.name">姓名 *</label><input id="f-name" name="name" autocomplete="name" required><span class="err" data-i18n="f.req">请填写此项</span></div>
+            <div class="field"><label for="f-company" data-i18n="f.company">公司名称 *</label><input id="f-company" name="company" autocomplete="organization" required><span class="err" data-i18n="f.req">请填写此项</span></div>
+          </div>
+          <div class="form-2">
+            <div class="field"><label for="f-email" data-i18n="f.email">电邮 *</label><input id="f-email" name="email" type="email" autocomplete="email" required><span class="err" data-i18n="f.emailErr">请输入有效的电邮地址</span></div>
+            <div class="field"><label for="f-phone" data-i18n="f.phone">电话</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+          </div>
+          <div class="field">
+            <label for="f-board" data-i18n="f.board">目标上市板块</label>
+            <select id="f-board" name="board">
+              <option value="undecided" data-i18n="f.b0">尚未确定</option>
+              <option value="main" data-i18n="route.main">主板 Main Board</option>
+              <option value="gem" data-i18n="route.gem">GEM 创业板</option>
+              <option value="18a" data-i18n="route.18a">18A 生物科技</option>
+              <option value="18c" data-i18n="route.18c">18C 特专科技</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-msg" data-i18n="f.msg">简要说明</label><textarea id="f-msg" name="message" data-i18n-ph="f.msgPh" placeholder="例如：所属行业、近年收入规模、计划上市时间"></textarea></div>
+          <p class="consent" data-i18n="f.consent">提交即表示您同意我们就本次咨询与您联系。您的资料将严格保密。</p>
+          <button class="btn btn-gold" type="submit" data-i18n="f.submit">提交咨询</button>
+        </form>
+        <div class="success" id="success" role="status">
+          <div class="tick"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
+          <h3 data-i18n="f.okT">感谢您的咨询</h3>
+          <p data-i18n="f.ok">我们已收到您的资料，顾问将在两个工作日内与您联系。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <span class="logo-text">IPO<b>-</b>Flex</span>
+      <nav class="foot-links" aria-label="页脚导航">
+        <a href="#process" data-i18n="nav.process">上市流程</a>
+        <a href="#services" data-i18n="nav.services">核心服务</a>
+        <a href="#faq" data-i18n="nav.faq">常见问题</a>
+        <a href="#contact" data-i18n="nav.contact">联系我们</a>
+        <a href="#" data-i18n="nav.privacy">隐私政策</a>
+      </nav>
+    </div>
+    <p class="disclaimer"><span data-i18n="foot.disc">本网站内容仅供一般参考，不构成法律、财务或投资建议。上市要求以香港联合交易所最新《上市规则》及相关指引为准。</span><br>© 2026 IPO-Flex. <span data-i18n="foot.rights">保留所有权利。</span></p>
+  </div>
+</footer>
+
+<script>
+  // ---------- Content (zh / en) ----------
+  const T = {
+    'skip': ['跳至主要内容', 'Skip to main content'],
+    'nav.process': ['上市流程', 'Roadmap'],
+    'nav.req': ['上市要求', 'Requirements'],
+    'nav.services': ['核心服务', 'Services'],
+    'nav.director': ['董事寄语', 'Director'],
+    'nav.faq': ['常见问题', 'FAQ'],
+    'nav.contact': ['联系我们', 'Contact'],
+    'nav.privacy': ['隐私政策', 'Privacy Policy'],
+    'cta.book': ['预约咨询', 'Book a Consultation'],
+    'cta.process': ['了解上市流程', 'Explore the Roadmap'],
+    'hero.eyebrow': ['香港上市顾问', 'Hong Kong IPO Advisory'],
+    'hero.t1': ['助您稳健登陆', 'Your Path to a'],
+    'hero.t2': ['资本市场', 'Successful Listing'],
+    'hero.sub': ['从上市可行性评估到挂牌后的持续合规，IPO-Flex 以一站式顾问服务，陪伴企业走好上市路上的每一步。',
+                 'From readiness assessment to post-listing compliance, IPO-Flex guides your company through every stage of going public in Hong Kong.'],
+    'route.main': ['主板 Main Board', 'Main Board'],
+    'route.gem': ['GEM 创业板', 'GEM'],
+    'route.18a': ['18A 生物科技', 'Chapter 18A Biotech'],
+    'route.18c': ['18C 特专科技', 'Chapter 18C Specialist Tech'],
+    'process.eyebrow': ['IPO 路线图', 'IPO Roadmap'],
+    'process.title': ['清晰的上市路线图', 'A Clear Path to Listing'],
+    'process.lead': ['香港上市涉及多方中介与严格的监管审阅。我们把复杂的流程拆解为七个阶段，让管理层随时掌握进度与下一步行动。',
+                     'A Hong Kong IPO involves many advisers and rigorous regulatory review. We break the journey into seven clear stages so management always knows where things stand and what comes next.'],
+    'req.eyebrow': ['上市资格', 'Eligibility'],
+    'req.title': ['上市要求一览', 'Listing Requirements at a Glance'],
+    'req.lead': ['不同上市板块与章节对财务表现、市值和业务性质有不同要求。选择适合的上市路径，是成功上市的第一步。',
+                 'Each board and chapter sets different tests for financial performance, market value and business profile. Choosing the right route is the first step to a successful listing.'],
+    'svc.eyebrow': ['核心服务', 'Our Services'],
+    'svc.title': ['一站式上市顾问服务', 'End-to-End IPO Advisory'],
+    'svc.lead': ['我们与保荐人、律师、审计师紧密协作，为您统筹上市全过程，让管理层专注于业务增长。',
+                 'We work closely with sponsors, lawyers and auditors to coordinate the entire process, so management can stay focused on growing the business.'],
+    'dir.eyebrow': ['董事寄语', 'A Word from Our Director'],
+    'dir.quote': ['上市不是终点，而是企业迈向更高治理水平与更广阔资本舞台的起点。我们希望成为客户最值得信赖的同行者。',
+                  'Listing is not the finish line. It is the beginning of stronger governance and a wider capital stage. We aim to be the partner our clients trust most along the way.'],
+    'why.eyebrow': ['为何选择 IPO-Flex', 'Why IPO-Flex'],
+    'conf.eyebrow': ['保密与合规', 'Confidentiality'],
+    'conf.title': ['严格保密，是我们合作的第一原则', 'Confidentiality Comes First'],
+    'conf.lead': ['上市筹备涉及大量未公开的财务与商业信息。我们在首次深入沟通前即签署保密协议，并以最小权限原则管理所有项目资料。',
+                  'IPO preparation involves sensitive, non-public financial and commercial information. We sign an NDA before any in-depth discussion and manage all project materials on a least-privilege basis.'],
+    'conf.p1t': ['保密协议先行', 'NDA First'],
+    'conf.p1': ['在获取任何敏感资料前签署 NDA，明确信息使用范围与期限。', 'An NDA is signed before we receive any sensitive material, defining scope and duration of use.'],
+    'conf.p2t': ['最小权限访问', 'Least-Privilege Access'],
+    'conf.p2': ['项目资料仅限核心团队成员按需访问，并保留完整的访问记录。', 'Project files are available only to the core team on a need-to-know basis, with full access logs.'],
+    'conf.p3t': ['利益冲突审查', 'Conflict Checks'],
+    'conf.p3': ['承接项目前进行利益冲突检查，确保顾问意见独立、客观。', 'Every engagement starts with a conflict check, keeping our advice independent and objective.'],
+    'faq.eyebrow': ['常见问题', 'FAQ'],
+    'faq.title': ['常见问题', 'Frequently Asked Questions'],
+    'faq.lead': ['以下是企业在筹备香港上市时最常提出的问题。', 'The questions companies ask most often when preparing for a Hong Kong IPO.'],
+    'contact.eyebrow': ['联系我们', 'Contact'],
+    'contact.title': ['开启您的上市之路', 'Start Your Listing Journey'],
+    'contact.lead': ['留下您的联系方式与基本情况，我们的顾问将在两个工作日内与您联系，安排一次免费的初步评估会议。',
+                     'Share a few details and an adviser will contact you within two business days to arrange a complimentary initial assessment.'],
+    'contact.emailL': ['电邮', 'Email'],
+    'contact.hk': ['香港总部', 'Hong Kong Headquarters'],
+    'contact.hkAddr': ['香港灣仔軒尼詩道225號1樓', '1/F, 225 Hennessy Road, Wan Chai, Hong Kong'],
+    'contact.zh': ['中国珠海总部', 'Zhuhai Headquarters, China'],
+    'contact.zhAddr': ['廣東省珠海市吉大东洲花园A座4樓', '4/F, Block A, Dongzhou Garden, Jida, Zhuhai, Guangdong, China'],
+    'f.name': ['姓名 *', 'Name *'],
+    'f.company': ['公司名称 *', 'Company *'],
+    'f.email': ['电邮 *', 'Email *'],
+    'f.phone': ['电话', 'Phone'],
+    'f.board': ['目标上市板块', 'Target listing route'],
+    'f.b0': ['尚未确定', 'Not sure yet'],
+    'f.msg': ['简要说明', 'Brief description'],
+    'f.msgPh': ['例如：所属行业、近年收入规模、计划上市时间', 'e.g. industry, recent revenue, target listing timeline'],
+    'f.req': ['请填写此项', 'This field is required'],
+    'f.emailErr': ['请输入有效的电邮地址', 'Please enter a valid email address'],
+    'f.consent': ['提交即表示您同意我们就本次咨询与您联系。您的资料将严格保密。', 'By submitting, you agree that we may contact you about this enquiry. Your information is kept strictly confidential.'],
+    'f.submit': ['提交咨询', 'Submit Enquiry'],
+    'f.okT': ['感谢您的咨询', 'Thank you'],
+    'f.ok': ['我们已收到您的资料，顾问将在两个工作日内与您联系。', 'We have received your details. An adviser will be in touch within two business days.'],
+    'foot.disc': ['本网站内容仅供一般参考，不构成法律、财务或投资建议。上市要求以香港联合交易所最新《上市规则》及相关指引为准。',
+                  'The content of this website is for general information only and does not constitute legal, financial or investment advice. Listing requirements are subject to the latest HKEX Listing Rules and guidance.'],
+    'foot.rights': ['保留所有权利。', 'All rights reserved.'],
+    'doc.title': ['IPO-Flex｜香港上市顾问', 'IPO-Flex | Hong Kong IPO Advisory'],
+    'a.menu': ['菜单', 'Menu'],
+    'a.tabs': ['上市板块', 'Listing routes'],
+    'a.next': ['切换', 'Show item'],
+  };
+
+  const STEPS = [
+    [['上市前评估', 'Readiness Assessment'], ['评估财务表现、业务模式与合规状况，选定最合适的上市板块与时间表。', 'Review financials, business model and compliance to choose the right board and timetable.']],
+    [['重组与架构', 'Restructuring'], ['梳理股权与集团架构，处理关联交易、同业竞争等上市障碍。', 'Streamline shareholding and group structure; resolve connected-transaction and competition issues.']],
+    [['委任中介团队', 'Appoint Advisers'], ['协助甄选保荐人、律师、审计师与估值师，并统筹工作分工。', 'Help select the sponsor, lawyers, auditors and valuers, and coordinate their scopes.']],
+    [['尽职调查与招股书', 'Due Diligence & Prospectus'], ['配合尽职调查，梳理业务亮点与风险因素，推进招股书撰写。', 'Support due diligence, shape the equity story and risk factors, and drive the prospectus.']],
+    [['递交 A1 与聆讯', 'A1 Filing & Hearing'], ['递交上市申请，协调回复联交所与证监会问询，筹备上市聆讯。', 'File the application, coordinate responses to HKEX and SFC comments, and prepare for the hearing.']],
+    [['路演、定价与挂牌', 'Roadshow & Listing'], ['筹划投资者路演与簿记建档，完成定价、配售与挂牌敲钟。', 'Plan the roadshow and bookbuilding, then complete pricing, allocation and listing day.']],
+    [['上市后持续合规', 'Post-Listing Compliance'], ['协助履行信息披露、企业管治与 ESG 报告等持续责任。', 'Meet ongoing disclosure, governance and ESG reporting obligations.']],
+  ];
+
+  // Figures checked Oct 2026 against published HKEX rule summaries; always confirm against the current Listing Rules.
+  const BOARDS = [
+    { tab: ['主板', 'Main Board'],
+      intro: ['主板适合已具规模、盈利或收入表现稳健的企业，申请人须符合以下三项财务测试之一。', 'For established companies with solid profit or revenue. Applicants must meet one of three financial tests.'],
+      tests: [
+        { t: ['盈利测试', 'Profit Test'], rows: [
+          [['最近一年盈利', 'Profit, latest year'], ['≥ 3,500 万港元', '≥ HK$35m']],
+          [['前两年累计盈利', 'Profit, prior two years'], ['≥ 4,500 万港元', '≥ HK$45m']],
+          [['上市时市值', 'Market cap at listing'], ['≥ 5 亿港元', '≥ HK$500m']] ] },
+        { t: ['市值 / 收入 / 现金流测试', 'Market Cap / Revenue / Cash Flow'], rows: [
+          [['上市时市值', 'Market cap at listing'], ['≥ 20 亿港元', '≥ HK$2bn']],
+          [['最近一年收入', 'Revenue, latest year'], ['≥ 5 亿港元', '≥ HK$500m']],
+          [['前三年经营现金流', 'Operating cash flow, 3 years'], ['≥ 1 亿港元', '≥ HK$100m']] ] },
+        { t: ['市值 / 收入测试', 'Market Cap / Revenue'], rows: [
+          [['上市时市值', 'Market cap at listing'], ['≥ 40 亿港元', '≥ HK$4bn']],
+          [['最近一年收入', 'Revenue, latest year'], ['≥ 5 亿港元', '≥ HK$500m']] ] },
+      ] },
+    { tab: ['GEM', 'GEM'],
+      intro: ['GEM 面向中小型及成长型企业，自 2024 年改革后新增以研发投入为基础的测试。', 'For small and mid-sized growth companies. Since the 2024 reforms, GEM also offers an R&D-based test.'],
+      tests: [
+        { t: ['现金流测试', 'Cash Flow Test'], rows: [
+          [['前两年经营现金流', 'Operating cash flow, 2 years'], ['≥ 3,000 万港元', '≥ HK$30m']],
+          [['上市时市值', 'Market cap at listing'], ['≥ 1.5 亿港元', '≥ HK$150m']] ] },
+        { t: ['市值 / 收入 / 研发测试', 'Market Cap / Revenue / R&D'], rows: [
+          [['上市时市值', 'Market cap at listing'], ['≥ 2.5 亿港元', '≥ HK$250m']],
+          [['前两年累计收入', 'Revenue, 2 years'], ['≥ 1 亿港元，且按年增长', '≥ HK$100m with YoY growth']],
+          [['前两年累计研发开支', 'R&D spend, 2 years'], ['≥ 3,000 万港元', '≥ HK$30m']],
+          [['研发占营运开支', 'R&D share of opex'], ['每年 ≥ 15%', '≥ 15% each year']] ] },
+      ] },
+    { tab: ['18A 生物科技', '18A Biotech'],
+      intro: ['第 18A 章允许尚未有收入或盈利的生物科技公司上市。', 'Chapter 18A allows biotech companies without revenue or profit to list.'],
+      tests: [
+        { t: ['主要条件', 'Key Conditions'], rows: [
+          [['上市时市值', 'Market cap at listing'], ['≥ 15 亿港元', '≥ HK$1.5bn']],
+          [['营运记录', 'Track record'], ['相若管理层下经营现有业务至少两个会计年度', '≥ 2 financial years in current business under substantially the same management']],
+          [['核心产品', 'Core product'], ['至少一项已超越概念阶段', 'At least one beyond the concept stage']],
+          [['营运资金', 'Working capital'], ['足以覆盖未来 12 个月成本的 125%', '≥ 125% of costs for the next 12 months']] ] },
+      ] },
+    { tab: ['18C 特专科技', '18C Specialist Tech'],
+      intro: ['第 18C 章面向新一代信息技术、先进硬件、新能源、新材料等特专科技公司。以下市值门槛为暂时下调标准，适用至 2027 年 8 月 31 日。', 'Chapter 18C covers specialist technology such as next-gen IT, advanced hardware, new energy and new materials. The market-cap thresholds below are temporary reductions, in effect until 31 August 2027.'],
+      tests: [
+        { t: ['已商业化公司', 'Commercial Companies'], rows: [
+          [['上市时市值', 'Market cap at listing'], ['≥ 40 亿港元', '≥ HK$4bn']],
+          [['最近一年特专科技业务收入', 'Specialist-tech revenue, latest year'], ['≥ 2.5 亿港元', '≥ HK$250m']] ] },
+        { t: ['未商业化公司', 'Pre-Commercial Companies'], rows: [
+          [['上市时市值', 'Market cap at listing'], ['≥ 80 亿港元', '≥ HK$8bn']],
+          [['研发投入', 'R&D'], ['须符合研发开支比例要求', 'Must meet R&D spending ratio requirements']] ] },
+      ] },
+  ];
+
+  const ICONS = [
+    '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+    '<rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v5M5 17v-3h14v3"/>',
+    '<circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c.8-3.6 3.2-5.5 6-5.5s5.2 1.9 6 5.5M15 15.2c2.6 0 4.6 1.6 5.2 4.8"/>',
+    '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h8"/>',
+    '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
+    '<path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/>',
+    '<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+    '<path d="M5 21c0-9 5-15 15-16-1 10-7 15-16 15"/><path d="M5 21l7-7"/>',
+  ];
+  const SERVICES = [
+    [['上市可行性评估', 'IPO Feasibility Assessment'], ['对照上市规则全面体检，识别差距并制定改善路线与时间表。', 'A full health check against the Listing Rules, with a gap analysis and remediation timeline.']],
+    [['企业重组与股权架构', 'Restructuring & Shareholding'], ['设计境内外架构、红筹或 VIE 安排及员工激励方案。', 'Onshore/offshore structures, red-chip or VIE arrangements and employee incentive plans.']],
+    [['中介团队统筹', 'Adviser Coordination'], ['甄选并统筹保荐人、律师、审计师等中介，管控进度与成本。', 'Select and coordinate sponsors, lawyers and auditors while managing timeline and budget.']],
+    [['财务与内控准备', 'Financial & Internal Controls'], ['协助财务报表规范化，建立符合上市公司标准的内控体系。', 'Bring financial reporting up to standard and build listed-company-grade internal controls.']],
+    [['招股书与监管沟通', 'Prospectus & Regulator Liaison'], ['提炼企业亮点，协助回复联交所及证监会的审阅问询。', 'Craft the equity story and help respond to HKEX and SFC comments.']],
+    [['投资者关系与路演', 'Investor Relations & Roadshow'], ['准备路演材料与管理层演练，对接基石及机构投资者。', 'Roadshow materials, management rehearsals and introductions to cornerstone and institutional investors.']],
+    [['公司秘书与合规', 'Company Secretarial & Compliance'], ['上市前后的公司秘书服务、董事培训与持续合规支持。', 'Company secretarial services, director training and ongoing compliance before and after listing.']],
+    [['ESG 报告', 'ESG Reporting'], ['按照联交所 ESG 及气候披露要求，建立数据体系并编制报告。', 'Build ESG data processes and prepare reports to HKEX ESG and climate-disclosure requirements.']],
+  ];
+
+  const WHY = [
+    [['全流程陪伴', 'End-to-End Partnership'], ['从第一次评估会议到上市后的首份年报，同一支核心团队全程跟进。', 'The same core team stays with you from the first assessment to your first annual report as a listed company.']],
+    [['务实的上市路径', 'Pragmatic Listing Strategy'], ['基于企业真实情况选择主板、GEM、18A 或 18C，不做不切实际的承诺。', 'We recommend Main Board, GEM, 18A or 18C based on where your business really is, with no unrealistic promises.']],
+    [['中英双语沟通', 'Bilingual Communication'], ['以中英双语对接境内外投资者、中介机构与监管机构。', 'We work fluently in Chinese and English with investors, advisers and regulators onshore and offshore.']],
+  ];
+
+  const FAQS = [
+    [['在香港上市一般需要多长时间？', 'How long does a Hong Kong IPO usually take?'],
+     ['视乎企业准备程度而定。从委任中介到挂牌，一般约需 9 至 18 个月；若需较大规模重组，前期准备时间会更长。', 'It depends on how prepared the company is. From appointing advisers to listing day typically takes around 9 to 18 months; significant restructuring adds time up front.']],
+    [['上市费用大概是多少？', 'What does an IPO cost?'],
+     ['费用主要包括保荐人、律师、审计师、印刷及包销佣金等，与集资规模和项目复杂度密切相关。我们会在初步评估后提供预算估算。', 'Costs cover the sponsor, lawyers, auditors, printing and underwriting commissions, and depend heavily on deal size and complexity. We provide a budget estimate after the initial assessment.']],
+    [['主板与 GEM 应该如何选择？', 'Should we choose the Main Board or GEM?'],
+     ['主板对盈利、收入或市值要求较高，适合已具规模的企业；GEM 门槛相对较低，适合成长型中小企业。选择时亦需考虑估值、流动性及长远融资计划。', 'The Main Board has higher profit, revenue or market-cap thresholds and suits established businesses; GEM has lower thresholds and suits growth-stage SMEs. Valuation, liquidity and long-term funding plans also matter.']],
+    [['什么是 A1 申请？', 'What is the A1 application?'],
+     ['A1 表格是由保荐人代表申请人向联交所递交的正式上市申请，连同招股书申请版本一并提交，标志着正式进入监管审阅阶段。', 'Form A1 is the formal listing application submitted to HKEX by the sponsor on the applicant\'s behalf, together with the draft prospectus. It starts the formal regulatory review.']],
+    [['IPO-Flex 与保荐人有何不同？', 'How is IPO-Flex different from a sponsor?'],
+     ['保荐人是持牌机构，负责尽职调查并向监管机构承担法定责任。IPO-Flex 作为上市顾问，协助企业做好上市前准备、甄选及统筹中介团队，并在整个过程中代表企业利益。', 'A sponsor is a licensed firm that conducts due diligence and carries statutory responsibilities to regulators. As an IPO adviser, IPO-Flex prepares the company, helps select and coordinate the adviser team, and represents the company\'s interests throughout.']],
+    [['内地企业可以通过红筹或 VIE 架构在香港上市吗？', 'Can mainland companies list via red-chip or VIE structures?'],
+     ['可以，但须符合内地境外上市备案规定以及联交所对相关架构的要求。我们会协助评估最合适的架构与备案路径。', 'Yes, subject to the mainland overseas-listing filing rules and HKEX requirements for such structures. We help assess the most suitable structure and filing route.']],
+    [['上市后有哪些持续责任？', 'What are the ongoing obligations after listing?'],
+     ['包括定期财务报告、内幕消息披露、关连交易规定、企业管治守则及 ESG 报告等。我们提供上市后持续合规支持。', 'They include periodic financial reporting, inside-information disclosure, connected-transaction rules, the Corporate Governance Code and ESG reporting. We offer ongoing post-listing compliance support.']],
+    [['如何开始与 IPO-Flex 合作？', 'How do we get started with IPO-Flex?'],
+     ['填写页面底部的咨询表格，我们会在签署保密协议后安排一次免费的初步评估会议，了解您的业务并给出初步上市建议。', 'Fill in the enquiry form below. After signing an NDA, we will arrange a complimentary initial assessment to understand your business and share preliminary listing recommendations.']],
+  ];
+
+  // ---------- i18n ----------
+  let lang = 'zh';
+  try { const s = localStorage.getItem('ipoflex-lang'); if (s === 'en' || s === 'zh') lang = s; } catch (e) {}
+  const L = pair => pair[lang === 'zh' ? 0 : 1];
+
+  function applyLang() {
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = L(T['doc.title']);
+    document.querySelectorAll('[data-i18n]').forEach(el => { const v = T[el.dataset.i18n]; if (v) el.textContent = L(v); });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = L(T[el.dataset.i18nPh]); });
+    document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+    document.getElementById('menuBtn').setAttribute('aria-label', L(T['a.menu']));
+    document.getElementById('tabs').setAttribute('aria-label', L(T['a.tabs']));
+    renderSteps(); renderTabs(); renderServices(); renderWhy(); renderFaq();
+  }
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => {
+    lang = b.dataset.lang;
+    try { localStorage.setItem('ipoflex-lang', lang); } catch (e) {}
+    applyLang();
+  }));
+
+  // ---------- Renderers ----------
+  function renderSteps() {
+    document.getElementById('steps').innerHTML = STEPS.map(([t, d], i) =>
+      `<li class="step"><span class="num">${String(i + 1).padStart(2, '0')}</span><div><h3>${L(t)}</h3><p>${L(d)}</p></div></li>`).join('');
+  }
+
+  let board = 0;
+  function renderTabs() {
+    const tabs = document.getElementById('tabs');
+    tabs.innerHTML = BOARDS.map((b, i) =>
+      `<button class="tab" role="tab" id="tab-${i}" aria-controls="panel" aria-selected="${i === board}" tabindex="${i === board ? 0 : -1}">${L(b.tab)}</button>`).join('');
+    const b = BOARDS[board], panel = document.getElementById('panel');
+    panel.setAttribute('aria-labelledby', `tab-${board}`);
+    panel.innerHTML = `<p class="panel-intro">${L(b.intro)}</p><div class="tests">${b.tests.map(t =>
+      `<div class="test"><h4>${L(t.t)}</h4><dl>${t.rows.map(([k, v]) => `<div class="row"><dt>${L(k)}</dt><dd>${L(v)}</dd></div>`).join('')}</dl></div>`).join('')}</div>
+      <p class="note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h0"/></svg><span>${lang === 'zh' ? '仅供参考，以香港联交所最新《上市规则》为准。' : 'For reference only. Subject to the latest HKEX Listing Rules.'}</span></p>`;
+  }
+  document.getElementById('tabs').addEventListener('click', e => {
+    const t = e.target.closest('[role=tab]'); if (!t) return;
+    board = +t.id.split('-')[1]; renderTabs(); document.getElementById(`tab-${board}`).focus();
+  });
+  document.getElementById('tabs').addEventListener('keydown', e => {
+    const n = BOARDS.length;
+    if (e.key === 'ArrowRight') board = (board + 1) % n;
+    else if (e.key === 'ArrowLeft') board = (board - 1 + n) % n;
+    else if (e.key === 'Home') board = 0;
+    else if (e.key === 'End') board = n - 1;
+    else return;
+    e.preventDefault(); renderTabs(); document.getElementById(`tab-${board}`).focus();
+  });
+
+  function renderServices() {
+    document.getElementById('svcGrid').innerHTML = SERVICES.map(([t, d], i) =>
+      `<article class="svc"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[i]}</svg></span><span class="idx">${String(i + 1).padStart(2, '0')}</span><h3>${L(t)}</h3><p>${L(d)}</p></article>`).join('');
+  }
+
+  const chevron = '<span class="plus" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>';
+  function renderFaq() {
+    document.getElementById('faqList').innerHTML = FAQS.map(([q, a]) =>
+      `<details><summary>${L(q)}${chevron}</summary><p>${L(a)}</p></details>`).join('');
+  }
+
+  // ---------- Why carousel (template's dots helper) ----------
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let why = 0, auto;
+  function renderWhy() {
+    document.getElementById('whySlides').innerHTML = WHY.map(([t, d], i) =>
+      `<div class="why-slide${i === why ? ' active' : ''}" ${i === why ? '' : 'aria-hidden="true"'}><h3>${L(t)}</h3><p>${L(d)}</p></div>`).join('');
+    const dots = document.getElementById('whyDots');
+    dots.innerHTML = WHY.map((_, i) => `<button type="button" aria-label="${L(T['a.next'])} ${i + 1}" aria-current="${i === why}"></button>`).join('');
+  }
+  function showWhy(i) {
+    why = i;
+    document.querySelectorAll('.why-slide').forEach((s, j) => { s.classList.toggle('active', j === i); s.toggleAttribute('aria-hidden', j !== i); });
+    document.querySelectorAll('#whyDots button').forEach((b, j) => b.setAttribute('aria-current', j === i));
+  }
+  document.getElementById('whyDots').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    showWhy([...b.parentNode.children].indexOf(b)); resetAuto();
+  });
+  const resetAuto = () => { clearInterval(auto); if (!reduced) auto = setInterval(() => showWhy((why + 1) % WHY.length), 6000); };
+
+  // ---------- Menu ----------
+  const menuBtn = document.getElementById('menuBtn'), nav = document.getElementById('nav');
+  menuBtn.addEventListener('click', () => { const open = nav.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', open); });
+  nav.addEventListener('click', e => { if (e.target.tagName === 'A') { nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded', false); } });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('open')) { nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded', false); menuBtn.focus(); } });
+
+  // ---------- Waveform (single rAF loop, as in the template) ----------
+  const waves = [['w1', 40, 0.010, 0], ['w2', 28, 0.016, 1.4], ['w3', 18, 0.024, 2.6]].map(([id, a, f, ph]) => ({ el: document.getElementById(id), a, f, ph }));
+  function drawWaves(time) {
+    waves.forEach(w => {
+      let d = '';
+      for (let x = 0; x <= 1200; x += 8) {
+        const env = Math.sin((x / 1200) * Math.PI);
+        const y = 65 + Math.sin(x * w.f + w.ph + time * 0.001) * w.a * env;
+        d += (x ? 'L' : 'M') + x + ' ' + y.toFixed(1);
+      }
+      w.el.setAttribute('d', d);
+    });
+  }
+  function frame(now) { drawWaves(now); requestAnimationFrame(frame); }
+  drawWaves(0);
+  if (!reduced) requestAnimationFrame(frame);
+
+  // ---------- Reveal on scroll ----------
+  if (!reduced && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  }
+
+  // ---------- Form ----------
+  const form = document.getElementById('form');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let first = null;
+    form.querySelectorAll('[required]').forEach(input => {
+      const field = input.closest('.field');
+      const ok = input.value.trim() && (input.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim()));
+      field.toggleAttribute('data-invalid', !ok);
+      input.setAttribute('aria-invalid', !ok);
+      if (!ok && !first) first = input;
+    });
+    if (first) { first.focus(); return; }
+    // TODO: POST new FormData(form) to your endpoint (e.g. Formspree) here.
+    form.hidden = true;
+    document.getElementById('success').classList.add('show');
+  });
+  form.addEventListener('input', e => {
+    const field = e.target.closest('.field');
+    if (field && field.hasAttribute('data-invalid') && e.target.value.trim()) { field.removeAttribute('data-invalid'); e.target.setAttribute('aria-invalid', false); }
+  });
+
+  // ---------- Hero spotlight (port of ibelick/spotlight; eased follow instead of framer-motion's spring) ----------
+  const spot = document.getElementById('heroSpot'), spotHost = spot.parentElement, SPOT = 340;
+  let sx = 0, sy = 0, stx = 0, sty = 0, spotRaf = null;
+  const stepSpot = () => {
+    const k = reduced ? 1 : 0.16;
+    sx += (stx - sx) * k; sy += (sty - sy) * k;
+    spot.style.transform = `translate(${sx - SPOT / 2}px, ${sy - SPOT / 2}px)`;
+    spotRaf = Math.abs(stx - sx) + Math.abs(sty - sy) > 0.5 ? requestAnimationFrame(stepSpot) : null;
+  };
+  spotHost.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') spot.classList.add('on'); });
+  spotHost.addEventListener('pointerleave', () => spot.classList.remove('on'));
+  spotHost.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse') return;
+    const r = spotHost.getBoundingClientRect();
+    stx = e.clientX - r.left; sty = e.clientY - r.top;
+    if (!spotRaf) spotRaf = requestAnimationFrame(stepSpot);
+  });
+
+  // ---------- Spline scene (port of SplineScene: lazy-load the runtime, show the loader until ready) ----------
+  const SPLINE_RUNTIME = 'https://unpkg.com/@splinetool/runtime@1.10.99/build/runtime.js';
+  const SPLINE_SCENE = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode';
+  const hero3d = document.getElementById('hero3d');
+  const loadSpline = () => import(SPLINE_RUNTIME)
+    .then(({ Application }) => new Application(document.getElementById('splineCanvas')).load(SPLINE_SCENE))
+    .then(() => hero3d.classList.add('ready'))
+    .catch(err => { console.warn('Spline scene failed to load', err); hero3d.classList.add('failed'); });
+  if (navigator.connection && navigator.connection.saveData) hero3d.classList.add('failed');
+  else if (document.readyState === 'complete') loadSpline();
+  else window.addEventListener('load', loadSpline, { once: true });
+
+  // ---------- GlowCard pointer tracking (one listener for all cards) ----------
+  const glowCards = document.getElementById('glowCards');
+  let glowRaf = null, gx = 0, gy = 0;
+  document.addEventListener('pointermove', e => {
+    gx = e.clientX; gy = e.clientY;
+    if (glowRaf) return;
+    glowRaf = requestAnimationFrame(() => {
+      glowRaf = null;
+      glowCards.style.setProperty('--x', gx.toFixed(2));
+      glowCards.style.setProperty('--xp', (gx / innerWidth).toFixed(2));
+      glowCards.style.setProperty('--y', gy.toFixed(2));
+      glowCards.style.setProperty('--yp', (gy / innerHeight).toFixed(2));
+    });
+  });
+
+  applyLang();
+  resetAuto();
+</script>
+</body>
+</html>
